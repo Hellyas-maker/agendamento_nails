@@ -11,4 +11,12 @@ CREATE TABLE agendamentos (
     CONSTRAINT un_agd_data_hora UNIQUE (data_agendamento, hora_agendamento)
 );
 
-select * from agendamentos;
+alter table agendamentos add column status varchar(20) default ''
+select * from agendamentos
+
+UPDATE agendamentos
+SET status = 'Agendado'
+WHERE status = 'agendado';
+
+
+

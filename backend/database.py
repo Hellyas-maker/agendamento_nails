@@ -25,7 +25,10 @@ def conectar():
         password=os.getenv("DB_PASSWORD"),
 
         # porta padrão do PostgreSQL
-        port=os.getenv("DB_PORT")
+        port=os.getenv("DB_PORT"),
+
+        # Obrigatório para a plataforma Neon
+        sslmode="require"
     )
 
     # retorna o objeto de conexão para que outras partes do sistema possam usar

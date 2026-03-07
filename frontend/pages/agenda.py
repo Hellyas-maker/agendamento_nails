@@ -8,7 +8,7 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 from backend.agendamentos import listar_agendamentos, cancelar_agendamento
 
-senha_correta = "1234"
+senha_correta = st.secrets["ADMIN_PASSWORD"]
 
 st.title("Painel Administrativo")
 

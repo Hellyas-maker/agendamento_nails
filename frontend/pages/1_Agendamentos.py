@@ -6,7 +6,7 @@ from datetime import datetime
 # Aqui eu adiciono o diretório raiz do projeto ao PATH do Python.
 # Isso permite importar módulos da pasta "backend" mesmo estando
 # executando o arquivo dentro da pasta "frontend".
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
 # Importa o Streamlit, biblioteca usada para criar interfaces web rapidamente com Python
 import streamlit as st

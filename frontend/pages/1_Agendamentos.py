@@ -28,10 +28,26 @@ st.title("Aline Lustoza - Nail Designer")
 # Texto explicativo
 st.write("Agende seu horário")
 
+from datetime import timedelta
+
+# gerar lista de domingos (próximos 365 dias)
+hoje = datetime.today().date()
+
+domingos = [
+    hoje + timedelta(days=i)
+    for i in range(365)
+    if (hoje + timedelta(days=i)).weekday() == 6
+]
+
 
 # Campo de seleção de data com calendário
 # Esse campo fica fora do form para permitir atualização dinâmica da página
 data = st.date_input("Data do agendamento", format="DD/MM/YYYY")
+
+# verifica se é domingo
+if data.weekday() == 6:
+    st.warning("⚠️ Não atendemos aos domingos. Escolha outra data.")
+    st.stop()
 
 
 # Busca no banco de dados os horários já ocupados para a data escolhida
@@ -45,10 +61,8 @@ horarios_ocupados = [h.strftime("%H:%M") for h in horarios_ocupados]
 
 # Lista fixa com todos os horários possíveis de atendimento
 horarios_disponiveis = [
-    "08:00","09:00","10:00","11:00",
-    "12:00","13:00","14:00","15:00",
-    "16:00","17:00","18:00","19:00"
-]
+    "08:00","09:30","11:00", "12:30",
+    "14:00","15:30", "17:00","18:30"]
 
 
 # Pega data e hora atual

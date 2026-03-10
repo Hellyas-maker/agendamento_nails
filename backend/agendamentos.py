@@ -1,4 +1,5 @@
 # Importa a função conectar do módulo database
+from datetime import date
 from backend.database import conectar
 
 # Importa a biblioteca psycopg2 para tratar erros do PostgreSQL
@@ -74,7 +75,7 @@ def buscar_horarios_ocupados(data):
     return [r[0] for r in resultados]
 
 
-#Função para listar todos os agendamentos do banco, usada na página de administração
+# Função para listar todos os agendamentos do banco, usada na página de administração
 def listar_agendamentos():
     conn = conectar()
     cursor = conn.cursor()
@@ -84,7 +85,7 @@ def listar_agendamentos():
         FROM agendamentos
         ORDER BY data_agendamento, hora_agendamento
     """)
- 
+
     dados = cursor.fetchall()
 
     cursor.close()
@@ -108,3 +109,25 @@ def cancelar_agendamento(id_agendamento):
 
     cursor.close()
     conn.close()
+
+
+def buscar_agendamentos_futuros():
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT data_agendamento, COUNT(*)
+        FROM agendamentos
+        WHERE data_agendamento >= CURRENT_DATE
+        AND status = 'Agendado'
+        GROUP BY data_agendamento
+        ORDER BY data_agendamento
+    """)
+
+    dados = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return dados

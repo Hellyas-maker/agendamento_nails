@@ -3,10 +3,11 @@ import sys
 import os
 from datetime import date
 
+
 # Permite importar backend
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from backend.agendamentos import listar_agendamentos, cancelar_agendamento
+from backend.agendamentos import listar_agendamentos, cancelar_agendamento, buscar_agendamentos_futuros
 
 senha_correta = st.secrets["ADMIN_PASSWORD"]
 
@@ -17,6 +18,15 @@ senha = st.text_input("Digite a senha", type="password")
 if senha == senha_correta:
 
     st.success("Acesso liberado")
+
+     # 🔔 notificação
+    notificacoes = buscar_agendamentos_futuros()
+
+    if notificacoes:
+        st.info("🔔 Novos agendamentos encontrados")
+
+        for data_not, quantidade in notificacoes:
+            st.write(f"📅 {data_not.strftime('%d/%m/%Y')} - {quantidade} agendamentos")
 
     st.title("Agenda da Profissional")
 

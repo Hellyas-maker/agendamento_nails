@@ -61,6 +61,7 @@ def buscar_horarios_ocupados(data):
         SELECT hora_agendamento
         FROM agendamentos
         WHERE data_agendamento = %s
+        AND status = 'Agendado'
     """, (data,))
 
     # fetchall retorna todos os resultados encontrados

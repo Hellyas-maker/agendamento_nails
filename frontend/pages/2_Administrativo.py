@@ -3,11 +3,15 @@ import sys
 import os
 from datetime import date
 
-
-# Permite importar backend
+# adiciona a raiz do projeto ao path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from backend.agendamentos import listar_agendamentos, cancelar_agendamento, buscar_agendamentos_futuros
+# agora importa o backend
+from backend.agendamentos import (
+    listar_agendamentos,
+    cancelar_agendamento,
+    buscar_agendamentos_futuros
+)
 
 senha_correta = st.secrets["ADMIN_PASSWORD"]
 

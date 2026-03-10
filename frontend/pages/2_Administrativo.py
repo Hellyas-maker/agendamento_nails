@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"
 # importa o módulo do backend
 import backend.agendamentos as ag
 
+from datetime import date
 
 senha_correta = st.secrets["ADMIN_PASSWORD"]
 

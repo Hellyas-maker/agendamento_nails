@@ -16,6 +16,7 @@ import streamlit as st
 # buscar_horarios_ocupados -> consulta no banco os horários já agendados
 from backend.agendamentos import criar_agendamento, buscar_horarios_ocupados
 
+
 # mostrar mensagem depois do rerun
 if "agendado" in st.session_state:
     st.success("✅ Agendamento realizado!")
@@ -43,7 +44,17 @@ domingos = [
 # Campo de seleção de data com calendário
 # Esse campo fica fora do form para permitir atualização dinâmica da página
 from datetime import date
+
+# período bloqueado
+bloqueio_inicio = date(2026, 3, 10)
+bloqueio_fim = date(2026, 3, 14)
+
 data = st.date_input("Data do agendamento", min_value=date.today(), format="DD/MM/YYYY")
+
+# bloqueia período específico
+if bloqueio_inicio <= data <= bloqueio_fim:
+    st.error("⚠️ Não há atendimentos neste período.")
+    st.stop()
 
 if data < date.today():
     st.error("Não é possível agendar em datas passadas.")

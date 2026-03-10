@@ -6,11 +6,9 @@ from datetime import date
 # adiciona a raiz do projeto ao path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-# agora importa o backend
-from backend.agendamentos import (
-    listar_agendamentos,
-    cancelar_agendamento
-)
+# importa o módulo do backend
+import backend.agendamentos as ag
+
 
 senha_correta = st.secrets["ADMIN_PASSWORD"]
 
@@ -23,7 +21,7 @@ if senha == senha_correta:
     st.success("Acesso liberado")
 
      # 🔔 notificação
-    notificacoes = buscar_agendamentos_futuros()
+    notificacoes = ag.buscar_agendamentos_futuros()
 
     if notificacoes:
         st.info("🔔 Novos agendamentos encontrados")
@@ -40,7 +38,7 @@ if senha == senha_correta:
         format="DD/MM/YYYY"
     )
 
-    agendamentos = listar_agendamentos()
+    agendamentos = ag.listar_agendamentos()
 
     # filtra pela data
     agenda_dia = [a for a in agendamentos if a[3] == data_escolhida]
@@ -60,15 +58,15 @@ if senha == senha_correta:
         st.divider()
 
         # LINHAS DA TABELA
-        for ag in agenda_dia:
+        for item in agenda_dia:
 
-            id_ag = ag[0]
-            cliente = ag[1]
-            servico = ag[2]
-            data = ag[3]
-            hora = ag[4]
-            telefone = ag[5]
-            status = ag[6]
+            id_ag = item[0]
+            cliente = item[1]
+            servico = item[2]
+            data = item[3]
+            hora = item[4]
+            telefone = item[5]
+            status = item[6]
 
             col1, col2, col3, col4, col5, col6 = st.columns(6)
 
@@ -83,7 +81,7 @@ if senha == senha_correta:
 
                 if col6.button("Cancelar", key=id_ag):
 
-                    cancelar_agendamento(id_ag)
+                    ag.cancelar_agendamento(id_ag)
 
                     st.success("Agendamento cancelado!")
 

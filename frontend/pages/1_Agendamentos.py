@@ -42,7 +42,12 @@ domingos = [
 
 # Campo de seleção de data com calendário
 # Esse campo fica fora do form para permitir atualização dinâmica da página
-data = st.date_input("Data do agendamento", format="DD/MM/YYYY")
+from datetime import date
+data = st.date_input("Data do agendamento", min_value=date.today(), format="DD/MM/YYYY")
+
+if data < date.today():
+    st.error("Não é possível agendar em datas passadas.")
+    st.stop()
 
 # verifica se é domingo
 if data.weekday() == 6:

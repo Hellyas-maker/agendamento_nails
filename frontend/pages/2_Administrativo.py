@@ -22,6 +22,7 @@ if senha == senha_correta:
 
     data_escolhida = st.date_input(
         "Escolha a data",
+        min_value=date.today(),
         value=date.today(),
         format="DD/MM/YYYY"
     )

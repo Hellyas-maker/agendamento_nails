@@ -1,6 +1,5 @@
 # Importa a função conectar do módulo database
 from datetime import date
-from backend.database import conectar
 
 # Importa a biblioteca psycopg2 para tratar erros do PostgreSQL
 import psycopg2
@@ -8,6 +7,7 @@ import psycopg2
 
 # Função responsável por salvar um agendamento no banco
 def criar_agendamento(cliente_nome, servico, data, hora, telefone):
+    from backend.database import conectar
 
     # Abre conexão com o banco
     conn = conectar()
@@ -48,6 +48,7 @@ def criar_agendamento(cliente_nome, servico, data, hora, telefone):
 
 # Função responsável por consultar no banco os horários já agendados em uma data
 def buscar_horarios_ocupados(data):
+    from backend.database import conectar
 
     # Abre conexão com o banco
     conn = conectar()
@@ -77,6 +78,8 @@ def buscar_horarios_ocupados(data):
 
 # Função para listar todos os agendamentos do banco, usada na página de administração
 def listar_agendamentos():
+    from backend.database import conectar
+
     conn = conectar()
     cursor = conn.cursor()
 
@@ -95,6 +98,7 @@ def listar_agendamentos():
 
 
 def cancelar_agendamento(id_agendamento):
+    from backend.database import conectar
 
     conn = conectar()
     cursor = conn.cursor()
@@ -112,6 +116,7 @@ def cancelar_agendamento(id_agendamento):
 
 
 def buscar_agendamentos_futuros():
+    from backend.database import conectar
 
     conn = conectar()
     cursor = conn.cursor()

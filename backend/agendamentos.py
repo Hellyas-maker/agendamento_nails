@@ -136,3 +136,25 @@ def buscar_agendamentos_futuros():
     conn.close()
 
     return dados
+
+
+def buscar_agendamentos_cliente(nome):
+
+    from backend.database import conectar
+
+    conn = conectar()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT cliente_nome, servico, data_agendamento, hora_agendamento, status
+        FROM agendamentos
+        WHERE LOWER(cliente_nome) LIKE LOWER(%s)
+        ORDER BY data_agendamento, hora_agendamento
+    """, (f"%{nome}%",))
+
+    dados = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return dados

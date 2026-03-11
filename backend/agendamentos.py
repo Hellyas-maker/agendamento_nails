@@ -6,7 +6,7 @@ import psycopg2
 
 
 # Função responsável por salvar um agendamento no banco
-def criar_agendamento(cliente_nome, servico, data, hora, telefone):
+def criar_agendamento(cliente_nome, servico, valor_total, data, hora, telefone):
     from backend.database import conectar
 
     # Abre conexão com o banco
@@ -20,9 +20,9 @@ def criar_agendamento(cliente_nome, servico, data, hora, telefone):
         # Executa o comando SQL de inserção na tabela agendamentos
         cursor.execute("""
             INSERT INTO agendamentos
-            (cliente_nome, servico, data_agendamento, hora_agendamento, telefone)
-            VALUES (%s, %s, %s, %s, %s)
-        """, (cliente_nome, servico, data, hora, telefone))
+            (cliente_nome, servico, valor, data_agendamento, hora_agendamento, telefone)
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (cliente_nome, servico, valor_total, data, hora, telefone))
 
         # Confirma a transação no banco (salva os dados definitivamente)
         conn.commit()
@@ -85,7 +85,7 @@ def listar_agendamentos():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT id, cliente_nome, servico, data_agendamento, hora_agendamento, telefone, status
+        SELECT id, cliente_nome, servico, valor, data_agendamento, hora_agendamento, telefone, status
         FROM agendamentos
         ORDER BY data_agendamento, hora_agendamento
     """)

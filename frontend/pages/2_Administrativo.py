@@ -42,21 +42,27 @@ if senha == senha_correta:
     agendamentos = ag.listar_agendamentos()
 
     # filtra pela data
-    agenda_dia = [a for a in agendamentos if a[3] == data_escolhida]
+    agenda_dia = [a for a in agendamentos if a[4] == data_escolhida]
+
+    faturamento_dia = sum(item[3] for item in agenda_dia if item[7] == "Agendado")
+
+    st.metric("💰 Faturamento do dia", f"R$ {faturamento_dia:.2f}")
 
     if agenda_dia:
 
         # CABEÇALHO DA TABELA
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
         col1.write("**Hora**")
         col2.write("**Cliente**")
         col3.write("**Serviço**")
-        col4.write("**Telefone**")
-        col5.write("**Status**")
-        col6.write("**Ação**")
+        col4.write("**Valor **")
+        col5.write("**Telefone**")
+        col6.write("**Status**")
+        col7.write("**Ação**")
 
         st.divider()
+
 
         # LINHAS DA TABELA
         for item in agenda_dia:
@@ -64,23 +70,25 @@ if senha == senha_correta:
             id_ag = item[0]
             cliente = item[1]
             servico = item[2]
-            data = item[3]
-            hora = item[4]
-            telefone = item[5]
-            status = item[6]
+            valor = item[3]
+            data = item[4]
+            hora = item[5]
+            telefone = item[6]
+            status = item[7]
 
-            col1, col2, col3, col4, col5, col6 = st.columns(6)
+            col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
             col1.write(hora.strftime("%H:%M"))
             col2.write(cliente)
             col3.write(servico)
-            col4.write(telefone)
-            col5.write(status)
+            col4.write(f"R$ {valor:.2f}")
+            col5.write(telefone)
+            col6.write(status)
 
             # botão cancelar
             if status != "Cancelado":
 
-                if col6.button("Cancelar", key=id_ag):
+                if col7.button("Cancelar", key=id_ag):
 
                     ag.cancelar_agendamento(id_ag)
 
@@ -90,7 +98,7 @@ if senha == senha_correta:
 
             else:
 
-                col6.write("—")
+                col7.write("—")
 
     else:
 

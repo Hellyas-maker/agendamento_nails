@@ -16,12 +16,10 @@ import streamlit as st
 # buscar_horarios_ocupados -> consulta no banco os horários já agendados
 from backend.agendamentos import criar_agendamento, buscar_horarios_ocupados
 
-
 # mostrar mensagem depois do rerun
 if "agendado" in st.session_state:
     st.success("✅ Agendamento realizado!")
     del st.session_state["agendado"]
-
 
 # Título principal da página
 st.title("Aline Lustoza - Nail Designer")
@@ -77,8 +75,8 @@ horarios_ocupados = [h.strftime("%H:%M") for h in horarios_ocupados]
 
 # Lista fixa com todos os horários possíveis de atendimento
 horarios_disponiveis = [
-    "08:00","09:30","11:00", "12:30",
-    "14:00","15:30", "17:00","18:30"]
+    "07:00", "08:30","10:00","11:30", "13:00",
+    "14:30","16:00", "17:30","19:00"]
 
 
 # Pega data e hora atual
@@ -96,23 +94,79 @@ if data == data_hoje:
     horarios_livres = [h for h in horarios_livres if h > hora_atual]
 
 
+
+# Campo de seleção para escolher o serviço desejado
+# Serviços e valores
+servicos = {
+    "Alongamento Gel na Tips": 110,
+    "Manutenção Gel na Tips": 90,
+    "Alongamento Fibra de Vidro": 130,
+    "Manutenção Fibra de Vidro": 100,
+    "Alongamento Molde F1": 110,
+    "Manutenção Molde F1": 90,
+    "Banho de Gel": 80,
+    "Esmaltação em Gel": 40,
+    "Mão": 25,
+    "Pé": 30,
+    "Pé + Mão": 50,
+    "Remoção de Gel": 40,
+    "Decoração Pinterest (p/ manutenção)": 20
+}
+
+servicos_por_unha = {
+    "Unha Quebrada": 5,
+    "Decoração Reversa": 30,
+}
+
+# cliente pode escolher vários serviços
+servicos_escolhidos = st.multiselect(
+    "Escolha os serviços",
+    list(servicos.keys())
+)
+
+quantidades_unhas = {}
+
+st.write("### Serviços por unha")
+
+for servico, valor in servicos_por_unha.items():
+
+    qtd = st.number_input(
+        f"{servico} (R$ {valor} por unha)",
+        min_value=0,
+        max_value=10,
+        step=1,
+        key=servico
+    )
+
+    if qtd > 0:
+        quantidades_unhas[servico] = qtd
+
+# mostrar valores individuais
+valor_total = 0
+
+st.write("### Resumo do atendimento")
+
+# serviços normais
+for s in servicos_escolhidos:
+    valor = servicos[s]
+    valor_total += valor
+    st.write(f"✔ {s} - R$ {valor:.2f}")
+
+# serviços por unha
+for s, qtd in quantidades_unhas.items():
+    valor = servicos_por_unha[s] * qtd
+    valor_total += valor
+    st.write(f"✔ {s} ({qtd} unhas) - R$ {valor:.2f}")
+
+st.write("---")
+st.success(f"💰 Total: R$ {valor_total:.2f}")
+
 # Formulário apenas para envio dos dados
 with st.form("form_agendamento"):
 
     # Campo de entrada para o nome do cliente
     nome = st.text_input("Nome do cliente")
 
-    # Campo de seleção para escolher o serviço desejado
-    servico = st.selectbox(
-        "Serviço",
-        [
-            "Alongamento Gel na Tips",
-            "Alongamento Fibra de Vidro",
-            "Alongamento Molde F1",
-            "Banho de Gel",
-            "Outros"
-        ]
-    )
 
     # Campo de seleção para escolher o horário
     # Mostra apenas os horários livres
@@ -128,22 +182,32 @@ with st.form("form_agendamento"):
 # Lógica executada quando o botão é clicado
 if enviar:
 
-    # Verifica se os campos obrigatórios foram preenchidos
-    if nome and servico and data and hora:
+    if nome and servicos_escolhidos and data and hora:
 
-        # Chama a função do backend que grava o agendamento no banco
-        criar_agendamento(nome, servico, data, hora, telefone)
+        # montar lista de serviços
+        lista_servicos = []
 
-        # marca que o agendamento foi feito
+        # serviços normais
+        lista_servicos.extend(servicos_escolhidos)
+
+        # serviços por unha
+        for s, qtd in quantidades_unhas.items():
+            lista_servicos.append(f"{s} ({qtd} unhas)")
+
+        # transformar em texto
+        servicos_texto = ", ".join(lista_servicos)
+
+        criar_agendamento(
+            nome,
+            servicos_texto,
+            valor_total,
+            data,
+            hora,
+            telefone
+        )
+
         st.session_state["agendado"] = True
-
-         # limpar campos
-        st.session_state["nome"] = ""
-        st.session_state["telefone"] = ""
-
-        # Recarrega a página para limpar os campos
         st.rerun()
 
     else:
-        # Caso algum campo esteja vazio
         st.error("Preencha todos os campos.")

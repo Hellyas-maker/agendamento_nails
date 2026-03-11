@@ -44,10 +44,15 @@ if senha == senha_correta:
     # filtra pela data
     agenda_dia = [a for a in agendamentos if a[4] == data_escolhida]
 
-    faturamento_dia = sum(item[3] for item in agenda_dia if item[7] == "Agendado")
+    try:
+        faturamento_dia = sum(item[3] for item in agenda_dia if item[7] == "Agendado")
 
-    st.metric("💰 Faturamento do dia", f"R$ {faturamento_dia:.2f}")
+        st.metric("💰 Faturamento do dia", f"R$ {faturamento_dia:.2f}")
 
+    except Exception:
+        st.error(f"Erro ao calcular faturamento!")
+
+    
     if agenda_dia:
 
         # CABEÇALHO DA TABELA
@@ -56,7 +61,7 @@ if senha == senha_correta:
         col1.write("**Hora**")
         col2.write("**Cliente**")
         col3.write("**Serviço**")
-        col4.write("**Valor **")
+        col4.write("**Valor**")
         col5.write("**Telefone**")
         col6.write("**Status**")
         col7.write("**Ação**")

@@ -94,7 +94,7 @@ if senha == senha_correta:
             # botão cancelar
             if status != "Cancelado":
 
-                if col8.button("Cancelar", key=id_ag):
+                if col8.button("❌", key=id_ag):
 
                     ag.cancelar_agendamento(id_ag)
 
@@ -109,7 +109,7 @@ if senha == senha_correta:
             # botão confirmar
             if status == "Pendente":
 
-                if col7.button("Confirmar", key=f"conf_{id_ag}"):
+                if col7.button("✅", key=f"conf_{id_ag}"):
 
                     ag.confirmar_agendamento(id_ag)
 

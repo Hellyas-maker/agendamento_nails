@@ -17,9 +17,6 @@ import streamlit as st
 from backend.agendamentos import criar_agendamento, buscar_horarios_ocupados
 
 # mostrar mensagem depois do rerun
-if "agendado" in st.session_state:
-    st.success("✅ Agendamento realizado!")
-    del st.session_state["agendado"]
 
 # Título principal da página
 st.title("Aline Lustoza - Nail Designer")
@@ -62,6 +59,12 @@ if data < date.today():
 if data.weekday() == 6:
     st.warning("⚠️ Não atendemos aos domingos. Escolha outra data.")
     st.stop()
+
+# verifica se precisa de confirmação
+if data.weekday() in [0, 5]:
+    status = "Pendente"
+else:
+    status = "Agendado"
 
 
 # Busca no banco de dados os horários já ocupados para a data escolhida
@@ -182,6 +185,11 @@ with st.form("form_agendamento"):
 # Lógica executada quando o botão é clicado
 if enviar:
 
+    if status == "Pendente":
+        st.success("✅ Solicitação enviada! A profissional irá confirmar seu horário em breve.")
+    else:
+        st.success("✅ Agendamento realizado!")
+
     if nome and servicos_escolhidos and data and hora:
 
         # montar lista de serviços
@@ -203,11 +211,16 @@ if enviar:
             valor_total,
             data,
             hora,
-            telefone
+            telefone,
+            status
         )
 
         st.session_state["agendado"] = True
         st.rerun()
+
+    if "agendado" in st.session_state:
+        st.success("✅ Agendamento realizado!")
+        del st.session_state["agendado"]
 
     else:
         st.error("Preencha todos os campos.")

@@ -56,7 +56,7 @@ if senha == senha_correta:
     if agenda_dia:
 
         # CABEÇALHO DA TABELA
-        col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+        col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
 
         col1.write("**Hora**")
         col2.write("**Cliente**")
@@ -64,7 +64,8 @@ if senha == senha_correta:
         col4.write("**Valor**")
         col5.write("**Telefone**")
         col6.write("**Status**")
-        col7.write("**Ação**")
+        col7.write("**Confirmar**")
+        col8.write("**Cancelar**")
 
         st.divider()
 
@@ -81,7 +82,7 @@ if senha == senha_correta:
             telefone = item[6]
             status = item[7]
 
-            col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+            col1, col2, col3, col4, col5, col6, col7, col8 = st.columns(8)
 
             col1.write(hora.strftime("%H:%M"))
             col2.write(cliente)
@@ -93,7 +94,7 @@ if senha == senha_correta:
             # botão cancelar
             if status != "Cancelado":
 
-                if col7.button("Cancelar", key=id_ag):
+                if col8.button("Cancelar", key=id_ag):
 
                     ag.cancelar_agendamento(id_ag)
 
@@ -103,6 +104,20 @@ if senha == senha_correta:
 
             else:
 
+                col8.write("—")
+            
+            # botão confirmar
+            if status == "Pendente":
+
+                if col7.button("Confirmar", key=f"conf_{id_ag}"):
+
+                    ag.confirmar_agendamento(id_ag)
+
+                    st.success("Agendamento confirmado!")
+
+                    st.rerun()
+
+            else:
                 col7.write("—")
 
     else:

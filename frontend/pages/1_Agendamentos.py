@@ -83,7 +83,7 @@ horarios_ocupados = [h.strftime("%H:%M") for h in horarios_ocupados]
 
 # Lista fixa com todos os horários possíveis de atendimento
 horarios_disponiveis = [
-    "07:00", "08:30","10:00","11:30", "13:00",
+    "08:30","10:00","11:30", "13:00",
     "14:30","16:00", "17:30","19:00"]
 
 

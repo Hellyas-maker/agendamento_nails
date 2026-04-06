@@ -60,13 +60,13 @@ if data.weekday() == 6:
     st.warning("⚠️ Não atendemos aos domingos. Escolha outra data.")
     st.stop()
 
-if data.weekday() in [0, 5]:
+if data.weekday() == 0:
     st.warning("⚠️ Procure a profissional para confirmar disponibilidade de horários para essa data.")
     st.stop()
 
 
 # verifica se precisa de confirmação
-if data.weekday() in [0, 5]:
+if data.weekday() == 0:
     status = "Pendente"
 else:
     status = "Agendado"
@@ -81,10 +81,20 @@ horarios_ocupados = buscar_horarios_ocupados(data)
 horarios_ocupados = [h.strftime("%H:%M") for h in horarios_ocupados]
 
 
-# Lista fixa com todos os horários possíveis de atendimento
-horarios_disponiveis = [
+# horários padrão (dias normais)
+horarios_semana = [
     "08:30","10:00","11:30", "13:00",
-    "14:30","16:00", "17:30","19:00"]
+    "14:30","16:00", "17:30","19:00"
+]
+
+# horários específicos de sábado
+horarios_sabado = ["07:00", "08:30", "10:00", "11:30"]
+
+# define quais horários usar
+if data.weekday() == 5:  # sábado
+    horarios_disponiveis = horarios_sabado
+else:
+    horarios_disponiveis = horarios_semana
 
 
 # Pega data e hora atual

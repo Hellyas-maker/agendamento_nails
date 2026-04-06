@@ -41,14 +41,14 @@ domingos = [
 from datetime import date
 
 # período bloqueado
-bloqueio_inicio = date(2026, 3, 10)
-bloqueio_fim = date(2026, 3, 14)
+bloqueio_inicio = date(2026, 4, 21)
+bloqueio_fim = date(2026, 4, 23)
 
 data = st.date_input("Data do agendamento", min_value=date.today(), format="DD/MM/YYYY")
 
 # bloqueia período específico
 if bloqueio_inicio <= data <= bloqueio_fim:
-    st.error("⚠️ Não há atendimentos neste período.")
+    st.error("⚠️ Período de feriados, procure a profissional para confirmar disponibilidade de horários para essa data.")
     st.stop()
 
 if data < date.today():
@@ -112,7 +112,7 @@ servicos = {
     "Manutenção Fibra de Vidro": 100,
     "Alongamento Molde F1": 110,
     "Manutenção Molde F1": 90,
-    "Banho de Gel": 80,
+    "Banho de Gel": 90,
     "Esmaltação em Gel": 40,
     "Mão": 25,
     "Pé": 30,

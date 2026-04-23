@@ -105,8 +105,7 @@ def cancelar_agendamento(id_agendamento):
     cursor = conn.cursor()
 
     cursor.execute("""
-        UPDATE agendamentos
-        SET status = 'Cancelado'
+        DELETE FROM agendamentos
         WHERE id = %s
     """, (id_agendamento,))
 

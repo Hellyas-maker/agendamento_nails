@@ -41,8 +41,8 @@ domingos = [
 from datetime import date
 
 # período bloqueado
-bloqueio_inicio = date(2026, 4, 21)
-bloqueio_fim = date(2026, 4, 23)
+bloqueio_inicio = date(2026, 5, 1)
+bloqueio_fim = date(2026, 5, 1)
 
 data = st.date_input("Data do agendamento", min_value=date.today(), format="DD/MM/YYYY")
 
@@ -60,7 +60,7 @@ if data.weekday() == 6:
     st.warning("⚠️ Não atendemos aos domingos. Escolha outra data.")
     st.stop()
 
-if data.weekday() in (0, 5):
+if data.weekday() in (0, 4, 5):
     st.warning("⚠️ Procure a profissional para confirmar disponibilidade de horários para essa data.")
     st.stop()
 

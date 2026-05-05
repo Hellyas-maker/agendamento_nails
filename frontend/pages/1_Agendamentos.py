@@ -60,7 +60,7 @@ if data.weekday() == 6:
     st.warning("⚠️ Não atendemos aos domingos. Escolha outra data.")
     st.stop()
 
-if data.weekday() in (0, 4, 5):
+if data.weekday() == 0:
     st.warning("⚠️ Procure a profissional para confirmar disponibilidade de horários para essa data.")
     st.stop()
 

@@ -124,9 +124,6 @@ servicos = {
     "Manutenção Molde F1": 90,
     "Banho de Gel": 90,
     "Esmaltação em Gel": 40,
-    "Mão": 25,
-    "Pé": 30,
-    "Pé + Mão": 50,
     "Remoção de Gel": 40,
     "Decoração Pinterest (p/ manutenção)": 20
 }

@@ -41,8 +41,8 @@ domingos = [
 from datetime import date
 
 # período bloqueado
-bloqueio_inicio = date(2026, 6, 4)
-bloqueio_fim = date(2026, 6, 4)
+bloqueio_inicio = date(2026, 12, 1)
+bloqueio_fim = date(2026, 12, 31)
 
 data = st.date_input("Data do agendamento", min_value=date.today(), format="DD/MM/YYYY")
 

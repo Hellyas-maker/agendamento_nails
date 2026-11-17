@@ -44,12 +44,29 @@ from datetime import date
 bloqueio_inicio = date(2026, 12, 1)
 bloqueio_fim = date(2026, 12, 31)
 
-data = st.date_input("Data do agendamento", min_value=date.today(), format="DD/MM/YYYY")
+data = st.date_input(
+    "Data do agendamento",
+    min_value=date.today(),
+    format="DD/MM/YYYY"
+)
 
-# bloqueia período específico
+# Liberação especial para dezembro mediante senha
 if bloqueio_inicio <= data <= bloqueio_fim:
-    st.error("⚠️ Período de feriados, procure a profissional para confirmar disponibilidade de horários para essa data.")
-    st.stop()
+
+    st.warning("🔒 Período reservado. Somente a profissional pode realizar agendamentos.")
+
+    senha_dezembro = st.text_input(
+        "Digite a senha da profissional",
+        type="password"
+    )
+
+    senha_correta = st.secrets["DECEMBER_BOOKING_PASSWORD"]
+
+    if senha_dezembro != senha_correta:
+        st.error("Senha incorreta ou não informada.")
+        st.stop()
+
+    st.success("Acesso liberado! Você pode realizar o agendamento.")
 
 if data < date.today():
     st.error("Não é possível agendar em datas passadas.")
